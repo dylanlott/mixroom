@@ -4,7 +4,9 @@ import authRoutes from './auth.route';
 
 const router = express.Router(); // eslint-disable-line new-cap
 
-router.get('/', (req, res) => res.status(200).json())
+router.get('/', (req, res) => {
+  res.status(200).json({ name: "mixroom", "version": "0.0.1" });
+})
 /** GET /health-check - Check service health */
 router.get('/health-check', (req, res) =>
   res.send('OK')

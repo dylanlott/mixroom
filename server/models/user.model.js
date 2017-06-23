@@ -72,13 +72,6 @@ UserSchema.statics = {
       .skip(+skip)
       .limit(+limit)
       .exec();
-  },
-
-  delete(id) {
-    return this.findByIdAndRemove(id)
-      .exec()
-      .then((data) => data)
-      .catch((err) => err);
   }
 };
 

@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import httpStatus from 'http-status';
 import APIError from '../helpers/APIError';
 import config from '../../config/config';
+import User from '../models/user.model';
 
 /**
  * Returns jwt token if valid username and password is provided
@@ -11,8 +12,10 @@ import config from '../../config/config';
  * @returns {*}
  */
 function login(req, res, next) {
-  User.find({ username: req.body.username })
+  User.findOne({ username: req.body.username })
     .then((user) => {
+      console.log('USER FOUND: ', user);
+
       if (req.body.username === user.username && req.body.password === user.password) {
         const token = jwt.sign({ username: user.username }, config.jwtSecret);
         return res.json({
@@ -34,14 +37,10 @@ function login(req, res, next) {
  * @returns {*}
  */
 function signup(req, res, next) {
-  const user = new User({
-    username: req.body.username,
-    password: req.body.password
-  });
-
+  const user = new User(req.body);
   user.save()
     .then((user) => res.status(201).json(user))
-    .catch((err) => APIError('Authentication error', httpStatus.UNAUTHORIZED, true));
+    .catch((err) => res.status(400).send(err));
 }
 
 /**

@@ -16,6 +16,7 @@ router.route('/login')
 router.route('/random-number')
   .get(expressJwt({ secret: config.jwtSecret }), authCtrl.getRandomNumber);
 
-router.post('/signup', authCtrl.signup);
+router.route('/signup')
+  .post(authCtrl.signup);
 
 export default router;
